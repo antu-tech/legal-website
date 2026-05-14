@@ -1,795 +1,234 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Antu Legal Search — 本地法律檢索引擎</title>
-    <meta name="description" content="安裝在 Mac 上的法律文件檢索工具。支援語意搜尋、法條查詢、裁判書與憲法法庭判決搜尋，資料完全儲存在本地。">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #0f4c81;
-            --primary-dark: #0a3358;
-            --accent: #d4af37;
-            --text: #1a1a1a;
-            --text-light: #4a4a4a;
-            --bg: #ffffff;
-            --bg-alt: #f6f8fa;
-            --border: #e2e8f0;
-            --radius: 0;
-            --shadow: 0 4px 24px rgba(0,0,0,0.08);
-            --font: 'Inter', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: var(--font);
-            color: var(--text);
-            line-height: 1.6;
-            background: var(--bg);
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .container {
-            max-width: 1120px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        /* Header */
-        header {
-            border-bottom: 1px solid var(--border);
-            background: var(--bg);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-inner {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 64px;
-        }
-
-        .logo {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text);
-            text-decoration: none;
-            letter-spacing: -0.02em;
-        }
-
-        .logo span { color: var(--accent); }
-
-        .logo small {
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-light);
-            margin-left: 8px;
-            letter-spacing: 0;
-        }
-
-        nav a {
-            margin-left: 32px;
-            text-decoration: none;
-            color: var(--text-light);
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-
-        nav a:hover { color: var(--text); }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 12px 28px;
-            font-size: 14px;
-            font-weight: 600;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: inherit;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: #fff;
-        }
-
-        .btn-primary:hover { background: var(--primary-dark); }
-
-        .btn-accent {
-            background: var(--accent);
-            color: #1a1a1a;
-        }
-
-        .btn-accent:hover {
-            background: #b8962f;
-            color: #000;
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--primary);
-            border: 1.5px solid var(--primary);
-        }
-
-        .btn-outline:hover {
-            background: var(--primary);
-            color: #fff;
-        }
-
-        .btn-sm { padding: 8px 20px; font-size: 13px; }
-
-        .btn-lg { padding: 14px 32px; font-size: 15px; }
-
-        .btn-full { width: 100%; }
-
-        /* Hero */
-        .hero {
-            padding: 96px 0 80px;
-            background: var(--bg-alt);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .hero-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 64px;
-            align-items: center;
-        }
-
-        .hero h1 {
-            font-size: 44px;
-            line-height: 1.15;
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            margin-bottom: 20px;
-        }
-
-        .hero h1 .accent { color: var(--accent); }
-
-        .hero p.lead {
-            font-size: 17px;
-            color: var(--text-light);
-            margin-bottom: 32px;
-            line-height: 1.65;
-        }
-
-        .hero-badges {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 32px;
-            flex-wrap: wrap;
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
-            background: #fff;
-            border: 1px solid var(--border);
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-light);
-        }
-
-        .hero-actions {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .hero-visual {
-            background: #fff;
-            border: 1px solid var(--border);
-            padding: 40px;
-            box-shadow: var(--shadow);
-        }
-
-        .hero-visual h3 {
-            font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: var(--text-light);
-            margin-bottom: 24px;
-        }
-
-        .install-option {
-            display: flex;
-            align-items: flex-start;
-            gap: 14px;
-            padding: 18px 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .install-option:last-child { border-bottom: none; padding-bottom: 0; }
-        .install-option:first-child { padding-top: 0; }
-
-        .install-icon {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--bg-alt);
-            font-size: 18px;
-            flex-shrink: 0;
-        }
-
-        .install-option h4 {
-            font-size: 15px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .install-option p {
-            font-size: 13px;
-            color: var(--text-light);
-            line-height: 1.5;
-        }
-
-        /* Sections */
-        section { padding: 80px 0; }
-
-        .section-header {
-            max-width: 640px;
-            margin-bottom: 56px;
-        }
-
-        .section-header h2 {
-            font-size: 32px;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            margin-bottom: 14px;
-        }
-
-        .section-header p {
-            font-size: 16px;
-            color: var(--text-light);
-        }
-
-        .section-header.center {
-            text-align: center;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* Feature grid */
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-        }
-
-        .feature-card {
-            background: #fff;
-            border: 1px solid var(--border);
-            padding: 32px;
-            transition: box-shadow 0.2s;
-        }
-
-        .feature-card:hover { box-shadow: var(--shadow); }
-
-        .feature-card .icon {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--bg-alt);
-            font-size: 18px;
-            margin-bottom: 16px;
-        }
-
-        .feature-card h3 {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .feature-card p {
-            font-size: 14px;
-            color: var(--text-light);
-            line-height: 1.6;
-        }
-
-        /* Install section */
-        .install-section {
-            background: var(--bg-alt);
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .install-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 32px;
-        }
-
-        .install-card {
-            background: #fff;
-            border: 1px solid var(--border);
-            padding: 40px;
-        }
-
-        .install-card h3 {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .install-card .subtitle {
-            font-size: 14px;
-            color: var(--text-light);
-            margin-bottom: 24px;
-        }
-
-        .code-block {
-            background: #0d1117;
-            color: #c9d1d9;
-            padding: 20px;
-            font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
-            font-size: 13px;
-            line-height: 1.6;
-            overflow-x: auto;
-            margin: 16px 0 20px;
-            position: relative;
-        }
-
-        .code-block .comment { color: #8b949e; }
-        .code-block .prompt { color: var(--accent); }
-
-        .copy-btn {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: rgba(255,255,255,0.1);
-            color: #c9d1d9;
-            border: none;
-            padding: 4px 10px;
-            font-size: 11px;
-            cursor: pointer;
-            font-family: inherit;
-        }
-
-        .copy-btn:hover { background: rgba(255,255,255,0.2); }
-
-        .note {
-            font-size: 13px;
-            color: var(--text-light);
-            padding: 12px 16px;
-            background: var(--bg-alt);
-            border-left: 3px solid var(--accent);
-            margin-top: 16px;
-        }
-
-        .note strong { color: var(--text); }
-
-        /* FAQ */
-        .faq-section { background: var(--bg-alt); border-top: 1px solid var(--border); }
-        .faq-list { max-width: 720px; margin: 0 auto; }
-        .faq-item { background: #fff; border: 1px solid var(--border); padding: 28px 32px; margin-bottom: 16px; }
-        .faq-item h4 { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
-        .faq-item p { font-size: 14px; color: var(--text-light); line-height: 1.65; }
-
-        /* Requirements */
-        .req-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-        }
-
-        .req-card {
-            border: 1px solid var(--border);
-            padding: 28px;
-            text-align: center;
-        }
-
-        .req-card .platform {
-            font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: var(--text-light);
-            margin-bottom: 12px;
-        }
-
-        .req-card .status {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 8px;
-        }
-
-        .req-card .status.plan {
-            color: var(--accent);
-        }
-
-        .req-card p {
-            font-size: 13px;
-            color: var(--text-light);
-        }
-
-        /* CTA */
-        .cta-section {
-            background: var(--primary);
-            color: #fff;
-            text-align: center;
-            padding: 96px 0;
-        }
-
-        .cta-section h2 {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 14px;
-            letter-spacing: -0.02em;
-        }
-
-        .cta-section p {
-            font-size: 16px;
-            opacity: 0.9;
-            max-width: 560px;
-            margin: 0 auto 28px;
-        }
-
-        .cta-section .btn-outline {
-            color: #fff;
-            border-color: rgba(255,255,255,0.6);
-        }
-
-        .cta-section .btn-outline:hover {
-            background: #fff;
-            color: var(--primary);
-        }
-
-        /* Footer */
-        footer {
-            border-top: 1px solid var(--border);
-            padding: 48px 0;
-            background: var(--bg);
-        }
-
-        .footer-inner {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 24px;
-        }
-
-        .footer-brand {
-            font-size: 14px;
-            color: var(--text-light);
-        }
-
-        .footer-links a {
-            margin-left: 24px;
-            font-size: 14px;
-            color: var(--text-light);
-            text-decoration: none;
-        }
-
-        .footer-links a:hover { color: var(--text); }
-
-        /* Toast */
-        .toast {
-            position: fixed;
-            bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: var(--text);
-            color: #fff;
-            padding: 10px 20px;
-            font-size: 13px;
-            font-weight: 500;
-            opacity: 0;
-            transition: all 0.3s ease;
-            z-index: 200;
-            pointer-events: none;
-        }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        /* Responsive */
-        @media (max-width: 880px) {
-            .hero-grid,
-            .install-grid { grid-template-columns: 1fr; }
-
-            .feature-grid,
-            .req-grid { grid-template-columns: 1fr; }
-
-            .hero h1 { font-size: 32px; }
-            .hero { padding: 64px 0; }
-
-            nav { display: none; }
-
-            .hero-actions { flex-direction: column; }
-            .hero-actions .btn { width: 100%; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Antu Legal Search — 本地法律檢索引擎</title>
+  <meta name="description" content="安裝在 Mac 上的法律文件檢索工具。支援語意搜尋、法條查詢、裁判書與憲法法庭判決搜尋，資料完全儲存在本地。">
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    if (localStorage.theme === "dark" || (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  </script>
 </head>
 <body>
 
-<header>
-    <div class="container header-inner">
-        <a href="https://antu-technology.com" class="logo">Antu<span>.</span><small>Legal Search</small></a>
-        <nav>
-            <a href="#features">功能特色</a>
-            <a href="#install">安裝方式</a>
-            <a href="#requirements">系統需求</a>
-            <a href="#faq">常見疑問</a>
-            <a href="https://github.com/antu-tech/law-search-tool" target="_blank" rel="noopener">GitHub</a>
-        </nav>
-    </div>
-</header>
+  <div id="scroll-progress" aria-hidden="true"></div>
 
-<section class="hero">
-    <div class="container">
-        <div class="hero-grid">
-            <div>
-                <h1>你的卷宗，<br>永遠不出這台 <span class="accent">Mac</span>。</h1>
-                <p class="lead">
-                    翻遍整櫃卷宗只為找一個判決要旨？法條、釋字、憲判字散落在不同網站，切換視窗比研究案情還累？Antu Legal Search 是專為台灣律師設計的本地智慧檢索引擎——卷宗、判決、法條全留在你的 Mac，同時具備語意搜尋與 AI 爭點比對，讓你兼顧效率與保密義務。
-                </p>
-                <div class="hero-badges">
-                    <span class="badge">🔒 本地儲存</span>
-                    <span class="badge">🧠 AI 語意搜尋</span>
-                    <span class="badge">⚡ Docker 一鍵啟動</span>
-                    <span class="badge">🆓 開源免費</span>
-                </div>
-                <div class="hero-actions">
-                    <a id="download-btn" href="https://github.com/antu-tech/law-search-tool/releases/latest" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                        下載 macOS 安裝程式
-                    </a>
-                    <a href="#install-terminal" class="btn btn-outline btn-lg">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-                        終端機安裝
-                    </a>
-                </div>
-            </div>
-            <div class="hero-visual">
-                <h3>兩種安裝方式</h3>
-                <div class="install-option">
-                    <div class="install-icon">💿</div>
-                    <div>
-                        <h4>圖形介面安裝包</h4>
-                        <p>下載 .dmg，拖曳安裝。提供啟動、停止、更新按鈕，無需接觸終端機。</p>
-                    </div>
-                </div>
-                <div class="install-option">
-                    <div class="install-icon">⌨️</div>
-                    <div>
-                        <h4>指令列安裝</h4>
-                        <p>一行程式碼複製貼上，透過 Docker Compose 自動部署。</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section id="features">
-    <div class="container">
-        <div class="section-header center">
-            <h2>為法律工作者設計</h2>
-            <p>從案件管理到法規查詢，整合您日常需要的所有工具。</p>
-        </div>
-        <div class="feature-grid">
-            <div class="feature-card">
-                <div class="icon">📄</div>
-                <h3>翻卷宗的時間，還給策略思考</h3>
-                <p>上傳 PDF、DOCX 案件文件，語意搜尋秒級鎖定爭點所在。不必再翻遍整櫃卷宗找一個判決要旨——輸入描述，系統懂得「換句話說」的關鍵內容。</p>
-            </div>
-            <div class="feature-card">
-                <div class="icon">⚖️</div>
-                <h3>一個介面統治法條與實務見解</h3>
-                <p>全國法規資料庫、各級法院裁判書、憲法法庭判決，全部整合在同一個搜尋框。終結十個瀏覽器分頁的噩夢，爭點一查就到位。</p>
-            </div>
-            <div class="feature-card">
-                <div class="icon">🤖</div>
-                <h3>AI 自動比對爭點與適用法條</h3>
-                <p>針對上傳的案件文件，AI 自動分析並推薦可能適用的法律條文，即時驗證條文有效性。降低遺漏重要實務見解的風險。</p>
-            </div>
-            <div class="feature-card">
-                <div class="icon">🔍</div>
-                <h3>釋字/憲判字一站搞定</h3>
-                <p>查詢大法官解釋（釋字）與憲法法庭判決（憲判字），包含判決主文、爭點摘要與引用關係。憲法層級的法源不再難追。</p>
-            </div>
-            <div class="feature-card">
-                <div class="icon">🏠</div>
-                <h3>機密卷宗從不上傳雲端</h3>
-                <p>所有資料與向量索引儲存在你的 Mac 本機。使用自有 API Key 進行 AI 分析，敏感案件資料不會流入第三方伺服器，完全符合律師保密義務。</p>
-            </div>
-            <div class="feature-card">
-                <div class="icon">🔄</div>
-                <h3>資訊室說要排兩週？不用等了</h3>
-                <p>下載 .dmg 雙擊安裝，五分鐘內開工。內建更新機制自動拉取最新版本，資料目錄獨立儲存，更新不會遺失已上傳文件。</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section id="install" class="install-section">
-    <div class="container">
-        <div class="section-header center">
-            <h2>選擇適合您的安裝方式</h2>
-            <p>兩種安裝路徑都會在本機建立完整的 Legal Search 環境，包含法規資料庫連線。</p>
-        </div>
-        <div class="install-grid">
-            <div class="install-card" id="install-gui">
-                <h3>💿 圖形介面安裝包</h3>
-                <p class="subtitle">適合不熟悉終端機的法律工作者</p>
-                <ol style="font-size: 14px; color: var(--text-light); line-height: 2; padding-left: 18px; margin-bottom: 20px;">
-                    <li>下載 <code>Antu-Legal-Search-macOS.dmg</code></li>
-                    <li>開啟 .dmg，將 App 拖曳至「應用程式」資料夾</li>
-                    <li>首次開啟時，App 會協助您安裝 Docker Desktop</li>
-                    <li>點擊「啟動服務」，自動完成部署</li>
-                </ol>
-                <a href="https://github.com/antu-tech/law-search-tool/releases/latest" class="btn btn-primary btn-full" target="_blank" rel="noopener">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    前往 GitHub Releases 下載
-                </a>
-                <div class="note">
-                    <strong>需要：</strong>macOS 12+、Docker Desktop（安裝包內建引導）
-                </div>
-            </div>
-            <div class="install-card" id="install-terminal">
-                <h3>⌨️ 終端機安裝</h3>
-                <p class="subtitle">適合習慣命令列的進階使用者</p>
-                <div class="code-block">
-                    <button class="copy-btn" onclick="copyCode(this)">複製</button>
-                    <span class="comment"># 1. 克隆倉庫</span><br>
-                    <span class="prompt">$</span> git clone https://github.com/antu-tech/law-search-tool.git<br>
-                    <span class="prompt">$</span> cd law-search-tool<br><br>
-                    <span class="comment"># 2. 執行安裝腳本</span><br>
-                    <span class="prompt">$</span> bash scripts/install.sh<br><br>
-                    <span class="comment"># 3. 啟動服務</span><br>
-                    <span class="prompt">$</span> bash scripts/start.sh
-                </div>
-                <a href="https://github.com/antu-tech/law-search-tool#quick-start" class="btn btn-outline btn-full" target="_blank" rel="noopener">
-                    查看完整安裝指南
-                </a>
-                <div class="note">
-                    <strong>需要：</strong>macOS 12+ 或 Linux、Git、Docker Desktop
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section id="requirements">
-    <div class="container">
-        <div class="section-header center">
-            <h2>系統支援</h2>
-            <p>目前支援 macOS。Windows 版本正在規劃中。</p>
-        </div>
-        <div class="req-grid">
-            <div class="req-card">
-                <div class="platform">macOS</div>
-                <div class="status">✓ 已支援</div>
-                <p>macOS 12 (Monterey) 或更新版本。支援 Intel 與 Apple Silicon。</p>
-            </div>
-            <div class="req-card">
-                <div class="platform">Linux</div>
-                <div class="status">✓ 已支援</div>
-                <p>透過終端機指令安裝。需 Docker Engine 與 Docker Compose。</p>
-            </div>
-            <div class="req-card">
-                <div class="platform">Windows</div>
-                <div class="status plan">⟳ 規劃中</div>
-                <p>Windows 安裝包與 WSL2 支援正在開發，預計近期推出。</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section id="faq" class="faq-section">
-    <div class="container">
-        <div class="section-header center">
-            <h2>常見疑問</h2>
-            <p>律師事務所導入新工具前的三大顧慮，我們直接回答。</p>
-        </div>
-        <div class="faq-list">
-            <div class="faq-item">
-                <h4>「本地安裝會不會很麻煩？我們事務所沒有 MIS。」</h4>
-                <p>提供 macOS 圖形安裝包，流程與安裝 Office 無異；亦提供一鍵終端機腳本供進階用戶。兩種方式都能在五分鐘內完成，無需資訊室排程。</p>
-            </div>
-            <div class="faq-item">
-                <h4>「AI 功能要用我自己的 API Key，會不會很貴或很複雜？」</h4>
-                <p>你完全掌控用量與費率，沒有套裝軟體的綁定授權。基礎搜尋與法源查詢無需 API Key，僅進階 AI 比對才會呼叫，成本透明可控。</p>
-            </div>
-            <div class="faq-item">
-                <h4>「我們已經在用司法院法學資料檢索系統了，為什麼還需要這個？」</h4>
-                <p>官方系統無法搜尋你事務所內部的卷宗與備忘錄，也不支援語意搜尋。Antu 補上「私有文件檢索」與「AI 爭點比對」這兩塊最耗時的缺口。</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="cta-section">
-    <div class="container">
-        <h2>準備好開始了嗎？</h2>
-        <p>下載安裝包或複製指令，五分鐘內即可在本機建立完整的法律檢索環境。完全免費，開源可稽核。</p>
-        <a href="https://github.com/antu-tech/law-search-tool" class="btn btn-outline btn-lg" target="_blank" rel="noopener">
-            在 GitHub 上查看原始碼
+  <header>
+    <nav class="nav" role="navigation" aria-label="主導覽">
+      <div class="nav__inner">
+        <a href="https://antu-technology.com" class="nav__logo" aria-label="Antu Technology">
+          Antu<span>Legal</span>
         </a>
-    </div>
-</section>
-
-<footer>
-    <div class="container footer-inner">
-        <div class="footer-brand">
-            © 2026 Antu Technology. All rights reserved.
+        <button class="nav__hamburger" aria-label="開啟選單" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav__links" id="nav-links">
+          <a href="#features" class="nav__link">功能特色</a>
+          <a href="#install" class="nav__link">安裝方式</a>
+          <a href="#requirements" class="nav__link">系統需求</a>
+          <a href="#faq" class="nav__link">常見疑問</a>
+          <a href="https://github.com/antu-tech/law-search-tool" class="nav__link" target="_blank" rel="noopener">GitHub</a>
         </div>
-        <div class="footer-links">
-            <a href="mailto:contact@antu-technology.com?subject=功能建議或錯誤回報">功能建議 / 錯誤回報</a>
-            <a href="https://github.com/antu-tech/law-search-tool/issues" target="_blank" rel="noopener">GitHub Issues</a>
-            <a href="https://github.com/antu-tech/law-search-tool" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="lp-main">
+
+    <!-- Hero -->
+    <section class="hero" aria-labelledby="hero-headline">
+      <div class="lp-container">
+        <p class="hero__eyebrow">本地安裝 · 資料自主 · AI 語意搜尋</p>
+        <h1 class="hero__headline" id="hero-headline">
+          你的卷宗，永遠不出這台 Mac
+        </h1>
+        <p class="hero__subheadline">
+          翻遍整櫃卷宗只為找一個判決要旨？法條、釋字、憲判字散落在不同網站，切換視窗比研究案情還累？Antu Legal Search 是專為台灣律師設計的本地智慧檢索引擎。
+        </p>
+        <div class="hero__cta">
+          <a href="https://github.com/antu-tech/law-search-tool/releases/latest" class="btn-filled" target="_blank" rel="noopener">
+            下載 macOS 安裝程式
+          </a>
+          <a href="#install-terminal" class="btn-outline-gold">
+            終端機安裝
+          </a>
         </div>
+        <button class="hero__scroll-arrow" aria-label="向下捲動"
+          onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="section section--alt" id="features" aria-labelledby="features-title">
+      <div class="lp-container">
+        <h2 class="section-title text-center" id="features-title" data-animate>為法律工作者設計</h2>
+        <p class="section-subtitle text-center" data-animate data-delay="1">從案件管理到法規查詢，整合您日常需要的所有工具</p>
+
+        <div class="features-grid">
+          <div class="feature-item" data-animate data-delay="1">
+            <div class="feature-item__content">
+              <p class="feature-item__title">翻卷宗的時間，還給策略思考</p>
+              <p class="feature-item__desc">上傳 PDF、DOCX 案件文件，語意搜尋秒級鎖定爭點所在。不必再翻遍整櫃卷宗找一個判決要旨——輸入描述，系統懂得「換句話說」的關鍵內容。</p>
+            </div>
+          </div>
+          <div class="feature-item" data-animate data-delay="2">
+            <div class="feature-item__content">
+              <p class="feature-item__title">一個介面統治法條與實務見解</p>
+              <p class="feature-item__desc">全國法規資料庫、各級法院裁判書、憲法法庭判決，全部整合在同一個搜尋框。終結十個瀏覽器分頁的噩夢，爭點一查就到位。</p>
+            </div>
+          </div>
+          <div class="feature-item" data-animate data-delay="3">
+            <div class="feature-item__content">
+              <p class="feature-item__title">AI 自動比對爭點與適用法條</p>
+              <p class="feature-item__desc">針對上傳的案件文件，AI 自動分析並推薦可能適用的法律條文，即時驗證條文有效性。降低遺漏重要實務見解的風險。</p>
+            </div>
+          </div>
+          <div class="feature-item" data-animate data-delay="4">
+            <div class="feature-item__content">
+              <p class="feature-item__title">釋字/憲判字一站搞定</p>
+              <p class="feature-item__desc">查詢大法官解釋（釋字）與憲法法庭判決（憲判字），包含判決主文、爭點摘要與引用關係。憲法層級的法源不再難追。</p>
+            </div>
+          </div>
+          <div class="feature-item" data-animate data-delay="5">
+            <div class="feature-item__content">
+              <p class="feature-item__title">機密卷宗從不上傳雲端</p>
+              <p class="feature-item__desc">所有資料與向量索引儲存在你的 Mac 本機。使用自有 API Key 進行 AI 分析，敏感案件資料不會流入第三方伺服器，完全符合律師保密義務。</p>
+            </div>
+          </div>
+          <div class="feature-item" data-animate data-delay="6">
+            <div class="feature-item__content">
+              <p class="feature-item__title">資訊室說要排兩週？不用等了</p>
+              <p class="feature-item__desc">下載 .dmg 雙擊安裝，五分鐘內開工。內建更新機制自動拉取最新版本，資料目錄獨立儲存，更新不會遺失已上傳文件。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Install Options -->
+    <section class="section section--dark" id="install" aria-labelledby="install-title">
+      <div class="lp-container">
+        <h2 class="section-title text-center" id="install-title" data-animate>選擇適合您的安裝方式</h2>
+        <p class="section-subtitle text-center" data-animate data-delay="1">兩種安裝路徑都會在本機建立完整的 Legal Search 環境，包含法規資料庫連線</p>
+
+        <div class="product-cards">
+          <div class="product-card" data-animate data-delay="1">
+            <span class="product-card__eyebrow">圖形介面</span>
+            <h3 class="product-card__title">.dmg 安裝包</h3>
+            <p class="product-card__desc">
+              適合不熟悉終端機的法律工作者。下載 Antu-Legal-Search-macOS.dmg，拖曳至「應用程式」資料夾即可。首次開啟時自動協助安裝 Docker Desktop，點擊「啟動服務」自動完成部署。
+            </p>
+            <a href="https://github.com/antu-tech/law-search-tool/releases/latest" class="product-card__cta" target="_blank" rel="noopener">前往下載</a>
+          </div>
+
+          <div class="product-card" data-animate data-delay="2" id="install-terminal">
+            <span class="product-card__eyebrow">指令列</span>
+            <h3 class="product-card__title">終端機安裝</h3>
+            <p class="product-card__desc">
+              適合習慣命令列的進階使用者。一行指令克隆倉庫，執行安裝腳本與啟動腳本，Docker Compose 自動完成後續部署。
+            </p>
+            <a href="https://github.com/antu-tech/law-search-tool#quick-start" class="product-card__cta" target="_blank" rel="noopener">查看安裝指南</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Requirements -->
+    <section class="section section--white" id="requirements" aria-labelledby="requirements-title">
+      <div class="lp-container">
+        <h2 class="section-title text-center" id="requirements-title" data-animate>系統支援</h2>
+        <p class="section-subtitle text-center" data-animate data-delay="1">目前支援 macOS 與 Linux。Windows 版本正在規劃中。</p>
+
+        <div class="features-grid">
+          <div class="feature-item" data-animate data-delay="1">
+            <div class="feature-item__content">
+              <p class="feature-item__title">macOS</p>
+              <p class="feature-item__desc">已支援。macOS 12 (Monterey) 或更新版本。支援 Intel 與 Apple Silicon。提供 .dmg 圖形安裝包與終端機腳本。</p>
+            </div>
+          </div>
+          <div class="feature-item" data-animate data-delay="2">
+            <div class="feature-item__content">
+              <p class="feature-item__title">Linux</p>
+              <p class="feature-item__desc">已支援。透過終端機指令安裝。需 Docker Engine 與 Docker Compose。適合部署在事務所內部伺服器。</p>
+            </div>
+          </div>
+          <div class="feature-item" data-animate data-delay="3">
+            <div class="feature-item__content">
+              <p class="feature-item__title">Windows</p>
+              <p class="feature-item__desc">規劃中。Windows 安裝包與 WSL2 支援正在開發，預計近期推出。目前可透過 WSL2 手動安裝。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section section--alt" id="faq" aria-labelledby="faq-title">
+      <div class="lp-container">
+        <h2 class="section-title text-center" id="faq-title" data-animate>常見疑問</h2>
+        <p class="section-subtitle text-center" data-animate data-delay="1">律師事務所導入新工具前的三大顧慮，我們直接回答</p>
+
+        <div class="pain-list">
+          <div class="pain-item" data-animate data-delay="1">
+            <div class="pain-item__num">01</div>
+            <div>
+              <p class="pain-item__title">本地安裝會不會很麻煩？我們事務所沒有 MIS。</p>
+              <p class="pain-item__desc">提供 macOS 圖形安裝包，流程與安裝 Office 無異；亦提供一鍵終端機腳本供進階用戶。兩種方式都能在五分鐘內完成，無需資訊室排程。</p>
+            </div>
+          </div>
+          <div class="pain-item" data-animate data-delay="2">
+            <div class="pain-item__num">02</div>
+            <div>
+              <p class="pain-item__title">AI 功能要用我自己的 API Key，會不會很貴或很複雜？</p>
+              <p class="pain-item__desc">你完全掌控用量與費率，沒有套裝軟體的綁定授權。基礎搜尋與法源查詢無需 API Key，僅進階 AI 比對才會呼叫，成本透明可控。</p>
+            </div>
+          </div>
+          <div class="pain-item" data-animate data-delay="3">
+            <div class="pain-item__num">03</div>
+            <div>
+              <p class="pain-item__title">我們已經在用司法院法學資料檢索系統了，為什麼還需要這個？</p>
+              <p class="pain-item__desc">官方系統無法搜尋你事務所內部的卷宗與備忘錄，也不支援語意搜尋。Antu 補上「私有文件檢索」與「AI 爭點比對」這兩塊最耗時的缺口。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section section--dark" aria-labelledby="cta-title">
+      <div class="lp-container text-center">
+        <h2 class="section-title" id="cta-title" data-animate>準備好開始了嗎？</h2>
+        <p class="section-subtitle" data-animate data-delay="1">下載安裝包或複製指令，五分鐘內即可在本機建立完整的法律檢索環境。完全免費，開源可稽核。</p>
+        <div data-animate data-delay="2">
+          <a href="https://github.com/antu-tech/law-search-tool" class="btn-outline-gold" target="_blank" rel="noopener">
+            在 GitHub 上查看原始碼
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer__brand">Antu Technology</div>
+    <div class="footer__copy">
+      <a href="mailto:contact@antu-technology.com">功能建議 / 錯誤回報</a> &middot;
+      <a href="https://github.com/antu-tech/law-search-tool/issues" target="_blank" rel="noopener">GitHub Issues</a> &middot;
+      <a href="https://github.com/antu-tech/law-search-tool" target="_blank" rel="noopener">GitHub</a>
     </div>
-</footer>
+    <div class="footer__copy">&copy; 2026 Antu Technology. All rights reserved.</div>
+  </footer>
 
-<div class="toast" id="toast">已複製到剪貼簿</div>
-
-<script>
-    function copyCode(btn) {
-        const block = btn.parentElement;
-        const lines = [];
-        block.childNodes.forEach(node => {
-            if (node.nodeType === 3) {
-                lines.push(node.textContent);
-            } else if (node.nodeType === 1 && !node.classList.contains('copy-btn')) {
-                lines.push(node.textContent);
-            }
-        });
-        const text = lines.join('').replace(/\n+/g, '\n').trim();
-        navigator.clipboard.writeText(text).then(() => {
-            const original = btn.textContent;
-            btn.textContent = '已複製';
-            showToast();
-            setTimeout(() => btn.textContent = original, 1500);
-        });
-    }
-
-    function showToast() {
-        const toast = document.getElementById('toast');
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 2000);
-    }
-
-    async function fetchLatestRelease() {
-        try {
-            const resp = await fetch('https://api.github.com/repos/antu-tech/law-search-tool/releases/latest');
-            if (!resp.ok) return;
-            const data = await resp.json();
-            const dmgAsset = data.assets.find(a => a.name.endsWith('.dmg'));
-            if (dmgAsset) {
-                const btn = document.getElementById('download-btn');
-                btn.href = dmgAsset.browser_download_url;
-            }
-        } catch (e) {
-            // Fallback to releases page already set in HTML
-        }
-    }
-    fetchLatestRelease();
-</script>
-
+  <script src="js/site.js"></script>
 </body>
 </html>
