@@ -183,6 +183,10 @@ img { max-width: 100%; display: block; }
   height: 20px;
 }
 
+.hero__scroll-arrow--spaced {
+  margin-top: 3rem;
+}
+
 /* Install Panel (Hero) */
 .install-panel {
   max-width: 900px;
@@ -191,6 +195,10 @@ img { max-width: 100%; display: block; }
   background: var(--surface);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-md);
+}
+
+.install-panel--narrow {
+  max-width: 600px;
 }
 
 .install-tabs {
@@ -278,6 +286,18 @@ img { max-width: 100%; display: block; }
   display: inline-flex;
   width: 100%;
   justify-content: center;
+}
+
+.install-hint {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  margin-top: 0.75rem;
+}
+
+.install-meta {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
 }
 
 .badge {
@@ -591,4 +611,5 @@ img { max-width: 100%; display: block; }
   .btn-filled, .btn-outline-gold { width: 100%; max-width: 320px; }
   .install-grid { grid-template-columns: 1fr; }
   .install-body { padding: 1.25rem; }
+  .hero__scroll-arrow--spaced { margin-top: 2rem; }
 }
