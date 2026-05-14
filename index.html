@@ -42,40 +42,21 @@
         <p class="hero__subheadline">
           法條、裁判、憲判一站查詢；上傳卷宗，語意搜尋秒級定位爭點。資料完全本地儲存。
         </p>
-        <div class="install-panel">
-          <div class="install-tabs">
-            <button class="install-tab active" onclick="showInstallTab('macos')" id="tab-macos">macOS</button>
-            <button class="install-tab" onclick="showInstallTab('terminal')" id="tab-terminal">Terminal</button>
+        <div class="hero-actions">
+          <a id="download-btn" href="https://github.com/antu-tech/law-search-tool/releases/latest" class="btn-filled btn-filled--large" target="_blank" rel="noopener">
+            Download for macOS
+          </a>
+          <p class="hero-actions__meta">macOS 12+ · Apple Silicon & Intel · GUI Launcher <span class="badge">Beta</span></p>
+
+          <div class="hero-divider">
+            <span>or install via terminal</span>
           </div>
-          <div class="install-body">
-            <div class="install-pane active" id="pane-macos">
-              <div class="install-grid">
-                <div>
-                  <div class="code-block">
-                    <button class="copy-btn" onclick="copyInstall(this)">複製</button>
-                    <span class="comment"># One-liner install</span><br>
-                    <span class="cmd">curl -fsSL https://raw.githubusercontent.com/antu-tech/law-search-tool/main/scripts/install.sh | bash</span>
-                  </div>
-                  <p class="install-hint">Works on macOS 12+ and Linux. Installs Docker, clones repo, and starts services.</p>
-                </div>
-                <div class="install-download">
-                  <h4>GUI Launcher <span class="badge">Beta</span></h4>
-                  <p>Menubar app with start / stop / browser buttons. Best for users who prefer not to use Terminal.</p>
-                  <a id="download-btn" href="https://github.com/antu-tech/law-search-tool/releases/latest" class="btn-filled" target="_blank" rel="noopener">Download for macOS</a>
-                  <p class="install-meta">Requires macOS 12+ &middot; Apple Silicon & Intel</p>
-                </div>
-              </div>
-            </div>
-            <div class="install-pane" id="pane-terminal">
-              <div class="code-block">
-                <button class="copy-btn" onclick="copyInstall(this)">複製</button>
-                <span class="comment"># Clone and start</span><br>
-                <span class="cmd">git clone https://github.com/antu-tech/law-search-tool.git</span><br>
-                <span class="cmd">cd law-search-tool && bash scripts/install.sh && bash scripts/start.sh</span>
-              </div>
-              <p class="install-hint">Requires Git and Docker. Works on macOS, Linux, and Windows (WSL2).</p>
-            </div>
+
+          <div class="code-block code-block--compact">
+            <button class="copy-btn" onclick="copyInstall(this)">複製</button>
+            <span class="cmd">curl -fsSL https://raw.githubusercontent.com/antu-tech/law-search-tool/main/scripts/install.sh | bash</span>
           </div>
+          <p class="install-hint">macOS 12+ and Linux. Installs Docker, clones repo, and starts services.</p>
         </div>
 
         <button class="hero__scroll-arrow hero__scroll-arrow--spaced" aria-label="向下捲動"
@@ -207,16 +188,26 @@
     <section class="section section--dark" aria-labelledby="cta-title">
       <div class="lp-container text-center">
         <h2 class="section-title" id="cta-title" data-animate>準備好開始了嗎？</h2>
-        <p class="section-subtitle" data-animate data-delay="1">下載安裝包或複製指令，五分鐘內即可在本機建立完整的法律檢索環境。採用 MIT 授權，完全免費。</p>
-        <div data-animate data-delay="2" class="hero__cta">
-          <a id="download-btn-bottom" href="https://github.com/antu-tech/law-search-tool/releases/latest" class="btn-filled" target="_blank" rel="noopener">Download for macOS</a>
-        </div>
-        <div data-animate data-delay="3" class="install-panel install-panel--narrow">
-          <div class="code-block">
-            <button class="copy-btn" onclick="copyInstall(this)">複製</button>
-            <span class="cmd">curl -fsSL https://raw.githubusercontent.com/antu-tech/law-search-tool/main/scripts/install.sh | bash</span>
+        <p class="section-subtitle" data-animate data-delay="1">下載安裝包，五分鐘內在本機建立完整的法律檢索環境。採用 MIT 授權，完全免費，原始碼公開可稽核。</p>
+
+        <div data-animate data-delay="2" class="cta-card">
+          <a id="download-btn-bottom" href="https://github.com/antu-tech/law-search-tool/releases/latest" class="btn-filled btn-filled--large" target="_blank" rel="noopener">
+            Download for macOS
+          </a>
+          <div class="cta-card__meta">
+            <span>macOS 12+</span>
+            <span class="cta-card__dot"></span>
+            <span>Apple Silicon & Intel</span>
+            <span class="cta-card__dot"></span>
+            <span>GUI Launcher <span class="badge">Beta</span></span>
           </div>
-          <p class="install-hint">Works on macOS 12+ and Linux. Installs Docker, clones repo, and starts services.</p>
+          <div class="cta-card__terminal">
+            <p>Prefer the command line?</p>
+            <div class="code-block code-block--compact">
+              <button class="copy-btn" onclick="copyInstall(this)">複製</button>
+              <span class="cmd">curl -fsSL https://raw.githubusercontent.com/antu-tech/law-search-tool/main/scripts/install.sh | bash</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -275,10 +266,9 @@
         const data = await resp.json();
         const dmg = data.assets.find(a => a.name.endsWith('.dmg'));
         if (dmg) {
-          const btn = document.getElementById('download-btn');
-          const card = document.getElementById('download-btn-card');
-          if (btn) btn.href = dmg.browser_download_url;
-          if (card) card.href = dmg.browser_download_url;
+          document.querySelectorAll('#download-btn, #download-btn-bottom').forEach(function(el) {
+            el.href = dmg.browser_download_url;
+          });
         }
       } catch (e) { /* fallback to releases page */ }
     }

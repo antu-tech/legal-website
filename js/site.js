@@ -1,6 +1,37 @@
 (function() {
   'use strict';
 
+  function copyFallback(text, btn) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); btn.textContent = '已複製'; }
+    catch (e) { btn.textContent = '失敗'; }
+    setTimeout(function() { btn.textContent = '複製'; }, 1500);
+    document.body.removeChild(ta);
+  }
+
+  function copyInstall(btn) {
+    var block = btn.parentElement;
+    var text = block.querySelector('.cmd');
+    if (!text) return;
+    var cmd = text.textContent.trim();
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        btn.textContent = '已複製';
+        setTimeout(function() { btn.textContent = '複製'; }, 1500);
+      }).catch(function() {
+        copyFallback(cmd, btn);
+      });
+    } else {
+      copyFallback(cmd, btn);
+    }
+  }
+  window.copyInstall = copyInstall;
+
   function initHamburger() {
     var navEl = document.querySelector('.nav');
     var hamburger = document.querySelector('.nav__hamburger');
