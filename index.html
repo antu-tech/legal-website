@@ -42,7 +42,7 @@
           法條、裁判、憲判一站查詢；上傳卷宗，語意搜尋秒級定位爭點。資料完全本地儲存。
         </p>
         <div class="hero__cta">
-          <a href="https://github.com/antu-tech/law-search-tool/releases/latest" class="btn-filled" target="_blank" rel="noopener">
+          <a id="download-btn" href="https://github.com/antu-tech/law-search-tool/releases/latest" class="btn-filled" target="_blank" rel="noopener">
             下載 macOS 安裝程式
           </a>
           <a href="#install-terminal" class="btn-outline-gold">
@@ -119,7 +119,7 @@
             <p class="product-card__desc">
               適合不熟悉終端機的法律工作者。下載 Antu-Legal-Search-macOS.dmg，拖曳至「應用程式」資料夾即可。首次開啟時自動協助安裝 Docker Desktop，點擊「啟動服務」自動完成部署。
             </p>
-            <a href="https://github.com/antu-tech/law-search-tool/releases/latest" class="product-card__cta" target="_blank" rel="noopener">前往下載</a>
+            <a id="download-btn-card" href="https://github.com/antu-tech/law-search-tool/releases/latest" class="product-card__cta" target="_blank" rel="noopener">前往下載</a>
           </div>
 
           <div class="product-card" data-animate data-delay="2" id="install-terminal">
@@ -254,5 +254,22 @@
   </footer>
 
   <script src="js/site.js"></script>
+  <script>
+    async function setDirectDownload() {
+      try {
+        const resp = await fetch('https://api.github.com/repos/antu-tech/law-search-tool/releases/latest');
+        if (!resp.ok) return;
+        const data = await resp.json();
+        const dmg = data.assets.find(a => a.name.endsWith('.dmg'));
+        if (dmg) {
+          const btn = document.getElementById('download-btn');
+          const card = document.getElementById('download-btn-card');
+          if (btn) btn.href = dmg.browser_download_url;
+          if (card) card.href = dmg.browser_download_url;
+        }
+      } catch (e) { /* fallback to releases page */ }
+    }
+    setDirectDownload();
+  </script>
 </body>
 </html>
