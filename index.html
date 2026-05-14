@@ -484,6 +484,39 @@
 
         .footer-links a:hover { color: var(--text); }
 
+        /* Version */
+        .version-section {
+            border-top: 1px solid var(--border);
+            padding: 32px 0;
+            background: var(--bg-alt);
+        }
+        .version-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .version-info {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+        .version-info strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+        .version-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .version-status {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+        .version-status.up-to-date { color: var(--primary); }
+        .version-status.update-available { color: var(--accent); }
+
         /* Toast */
         .toast {
             position: fixed;
@@ -733,15 +766,29 @@
     </div>
 </section>
 
+<section class="version-section">
+    <div class="container version-inner">
+        <div class="version-info">
+            <strong>Antu Legal Search v1.0.0</strong> — 版本資訊
+        </div>
+        <div class="version-actions">
+            <span class="version-status" id="version-status"></span>
+            <button class="btn btn-sm btn-outline" id="check-update-btn" onclick="checkForUpdate()">
+                檢查更新
+            </button>
+        </div>
+    </div>
+</section>
+
 <footer>
     <div class="container footer-inner">
         <div class="footer-brand">
             © 2026 Antu Technology. All rights reserved.
         </div>
         <div class="footer-links">
-            <a href="mailto:hello@antu-tech.com">hello@antu-tech.com</a>
+            <a href="mailto:contact@antu-technology.com?subject=功能建議或錯誤回報">功能建議 / 錯誤回報</a>
+            <a href="https://github.com/antu-tech/law-search-tool/issues" target="_blank" rel="noopener">GitHub Issues</a>
             <a href="https://github.com/antu-tech/law-search-tool" target="_blank" rel="noopener">GitHub</a>
-            <a href="https://antu-technology.com" target="_blank" rel="noopener">antu-technology.com</a>
         </div>
     </div>
 </footer>
@@ -774,7 +821,8 @@
         setTimeout(() => toast.classList.remove('show'), 2000);
     }
 
-    // Auto-detect DMG download URL from GitHub API if possible
+    const CURRENT_VERSION = '1.0.0';
+
     async function fetchLatestRelease() {
         try {
             const resp = await fetch('https://api.github.com/repos/antu-tech/law-search-tool/releases/latest');
@@ -785,10 +833,39 @@
                 const btn = document.getElementById('download-btn');
                 btn.href = dmgAsset.browser_download_url;
             }
+            return data.tag_name;
         } catch (e) {
-            // Fallback to releases page already set in HTML
+            return null;
         }
     }
+
+    async function checkForUpdate() {
+        const btn = document.getElementById('check-update-btn');
+        const status = document.getElementById('version-status');
+        const originalText = btn.textContent;
+        btn.textContent = '檢查中…';
+        btn.disabled = true;
+
+        const latestTag = await fetchLatestRelease();
+        btn.textContent = originalText;
+        btn.disabled = false;
+
+        if (!latestTag) {
+            status.textContent = '無法連線，請稍後再試';
+            status.className = 'version-status';
+            return;
+        }
+
+        const latestVersion = latestTag.replace(/^v/, '');
+        if (latestVersion === CURRENT_VERSION) {
+            status.textContent = '✓ 已是最新版本';
+            status.className = 'version-status up-to-date';
+        } else {
+            status.innerHTML = `發現新版本 <a href="https://github.com/antu-tech/law-search-tool/releases/latest" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600;">${latestTag}</a> — <a href="https://github.com/antu-tech/law-search-tool/releases/latest" target="_blank" rel="noopener" style="color:var(--primary);font-weight:600;">立即下載</a>`;
+            status.className = 'version-status update-available';
+        }
+    }
+
     fetchLatestRelease();
 </script>
 
