@@ -6,17 +6,8 @@
   <title>Antu Legal Search — 本地法律檢索引擎</title>
   <meta name="description" content="安裝在 Mac 上的法律文件檢索工具。支援語意搜尋、法條查詢、裁判書與憲法法庭判決搜尋，資料完全儲存在本地。">
   <link rel="stylesheet" href="css/style.css">
-  <script>
-    if (localStorage.theme === "dark" || (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  </script>
 </head>
 <body>
-
-  <div id="scroll-progress" aria-hidden="true"></div>
 
   <header>
     <nav class="nav" role="navigation" aria-label="主導覽">
@@ -38,7 +29,7 @@
     </nav>
   </header>
 
-  <main class="lp-main">
+  <main>
 
     <!-- Hero -->
     <section class="hero" aria-labelledby="hero-headline">
@@ -48,7 +39,7 @@
           你的卷宗，永遠不出這台 Mac
         </h1>
         <p class="hero__subheadline">
-          翻遍整櫃卷宗只為找一個判決要旨？法條、釋字、憲判字散落在不同網站，切換視窗比研究案情還累？Antu Legal Search 是專為台灣律師設計的本地智慧檢索引擎。
+          法條、裁判、憲判一站查詢；上傳卷宗，語意搜尋秒級定位爭點。資料完全本地儲存。
         </p>
         <div class="hero__cta">
           <a href="https://github.com/antu-tech/law-search-tool/releases/latest" class="btn-filled" target="_blank" rel="noopener">
@@ -216,8 +207,6 @@
         </div>
       </div>
     </section>
-
-  </main>
 
     <!-- Acknowledgments -->
     <section class="section section--white" aria-labelledby="ack-title">
