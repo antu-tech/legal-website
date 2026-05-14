@@ -359,7 +359,7 @@ img { max-width: 100%; display: block; }
 
 .section--alt { background: var(--bg-alt); }
 .section--dark {
-  background: var(--bg-alt);
+  background: linear-gradient(160deg, #FAF9F6 0%, #F2F1ED 60%, #EAE5DA 100%);
   border-top: 1px solid var(--border-subtle);
   border-bottom: 1px solid var(--border-subtle);
 }
