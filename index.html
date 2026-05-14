@@ -191,19 +191,6 @@
       </div>
     </section>
 
-    <!-- CTA -->
-    <section class="section section--dark" aria-labelledby="cta-title">
-      <div class="lp-container text-center">
-        <h2 class="section-title" id="cta-title" data-animate>準備好開始了嗎？</h2>
-        <p class="section-subtitle" data-animate data-delay="1">下載安裝包，五分鐘內在本機建立完整的法律檢索環境。採用 MIT 授權，完全免費，原始碼公開可稽核。</p>
-
-        <div data-animate data-delay="2" class="cta-simple">
-          <a id="download-btn-bottom" href="https://github.com/antu-tech/law-search-tool/releases/latest" class="btn-filled" target="_blank" rel="noopener">Download for macOS</a>
-          <p class="cta-simple__meta">macOS 12+ · Apple Silicon & Intel · GUI Launcher <span class="badge">Beta</span></p>
-        </div>
-      </div>
-    </section>
-
     <!-- Acknowledgments -->
     <section class="section section--white" aria-labelledby="ack-title">
       <div class="lp-container">
@@ -258,9 +245,8 @@
         const data = await resp.json();
         const dmg = data.assets.find(a => a.name.endsWith('.dmg'));
         if (dmg) {
-          document.querySelectorAll('#download-btn, #download-btn-bottom').forEach(function(el) {
-            el.href = dmg.browser_download_url;
-          });
+          const btn = document.getElementById('download-btn');
+          if (btn) btn.href = dmg.browser_download_url;
         }
       } catch (e) { /* fallback to releases page */ }
     }
