@@ -124,7 +124,7 @@ img { max-width: 100%; display: block; }
 .hero {
   position: relative;
   padding: 6rem 0 5rem;
-  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+  background: var(--surface);
   border-bottom: 1px solid var(--border-subtle);
   text-align: center;
 }
