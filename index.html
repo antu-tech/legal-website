@@ -20,7 +20,6 @@
         </button>
         <div class="nav__links" id="nav-links">
           <a href="#features" class="nav__link">功能特色</a>
-          <a href="#install" class="nav__link">安裝方式</a>
           <a href="#requirements" class="nav__link">系統需求</a>
           <a href="#faq" class="nav__link">常見疑問</a>
           <a href="https://github.com/antu-tech/law-search-tool" class="nav__link" target="_blank" rel="noopener">GitHub</a>
@@ -41,15 +40,43 @@
         <p class="hero__subheadline">
           法條、裁判、憲判一站查詢；上傳卷宗，語意搜尋秒級定位爭點。資料完全本地儲存。
         </p>
-        <div class="hero__cta">
-          <a id="download-btn" href="https://github.com/antu-tech/law-search-tool/releases/latest" class="btn-filled" target="_blank" rel="noopener">
-            下載 macOS 安裝程式
-          </a>
-          <a href="#install-terminal" class="btn-outline-gold">
-            終端機安裝
-          </a>
+        <div class="install-panel">
+          <div class="install-tabs">
+            <button class="install-tab active" onclick="showInstallTab('macos')" id="tab-macos">macOS</button>
+            <button class="install-tab" onclick="showInstallTab('terminal')" id="tab-terminal">Terminal</button>
+          </div>
+          <div class="install-body">
+            <div class="install-pane active" id="pane-macos">
+              <div class="install-grid">
+                <div>
+                  <div class="code-block">
+                    <button class="copy-btn" onclick="copyInstall(this)">複製</button>
+                    <span class="comment"># One-liner install</span><br>
+                    <span class="cmd">curl -fsSL https://raw.githubusercontent.com/antu-tech/law-search-tool/main/scripts/install.sh | bash</span>
+                  </div>
+                  <p style="font-size:0.8125rem;color:var(--text-muted);margin-top:0.75rem">Works on macOS 12+ and Linux. Installs Docker, clones repo, and starts services.</p>
+                </div>
+                <div class="install-download">
+                  <h4>GUI Launcher <span class="badge">Beta</span></h4>
+                  <p>Menubar app with start / stop / browser buttons. Best for users who prefer not to use Terminal.</p>
+                  <a id="download-btn" href="https://github.com/antu-tech/law-search-tool/releases/latest" class="btn-filled" target="_blank" rel="noopener">Download for macOS</a>
+                  <p style="font-size:0.75rem;color:var(--text-muted);margin-top:0.5rem">Requires macOS 12+ &middot; Apple Silicon & Intel</p>
+                </div>
+              </div>
+            </div>
+            <div class="install-pane" id="pane-terminal">
+              <div class="code-block">
+                <button class="copy-btn" onclick="copyInstall(this)">複製</button>
+                <span class="comment"># Clone and start</span><br>
+                <span class="cmd">git clone https://github.com/antu-tech/law-search-tool.git</span><br>
+                <span class="cmd">cd law-search-tool && bash scripts/install.sh && bash scripts/start.sh</span>
+              </div>
+              <p style="font-size:0.8125rem;color:var(--text-muted);margin-top:0.75rem">Requires Git and Docker. Works on macOS, Linux, and Windows (WSL2).</p>
+            </div>
+          </div>
         </div>
-        <button class="hero__scroll-arrow" aria-label="向下捲動"
+
+        <button class="hero__scroll-arrow" aria-label="向下捲動" style="margin-top:3rem"
           onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
@@ -101,34 +128,6 @@
               <p class="feature-item__title">資訊室說要排兩週？不用等了</p>
               <p class="feature-item__desc">下載 .dmg 雙擊安裝，五分鐘內開工。內建更新機制自動拉取最新版本，資料目錄獨立儲存，更新不會遺失已上傳文件。</p>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Install Options -->
-    <section class="section section--dark" id="install" aria-labelledby="install-title">
-      <div class="lp-container">
-        <h2 class="section-title text-center" id="install-title" data-animate>選擇適合您的安裝方式</h2>
-        <p class="section-subtitle text-center" data-animate data-delay="1">兩種安裝路徑都會在本機建立完整的 Legal Search 環境，包含法規資料庫連線</p>
-
-        <div class="product-cards">
-          <div class="product-card" data-animate data-delay="1">
-            <span class="product-card__eyebrow">圖形介面</span>
-            <h3 class="product-card__title">.dmg 安裝包</h3>
-            <p class="product-card__desc">
-              適合不熟悉終端機的法律工作者。下載 Antu-Legal-Search-macOS.dmg，拖曳至「應用程式」資料夾即可。首次開啟時自動協助安裝 Docker Desktop，點擊「啟動服務」自動完成部署。
-            </p>
-            <a id="download-btn-card" href="https://github.com/antu-tech/law-search-tool/releases/latest" class="product-card__cta" target="_blank" rel="noopener">前往下載</a>
-          </div>
-
-          <div class="product-card" data-animate data-delay="2" id="install-terminal">
-            <span class="product-card__eyebrow">指令列</span>
-            <h3 class="product-card__title">終端機安裝</h3>
-            <p class="product-card__desc">
-              適合習慣命令列的進階使用者。一行指令克隆倉庫，執行安裝腳本與啟動腳本，Docker Compose 自動完成後續部署。
-            </p>
-            <a href="https://github.com/antu-tech/law-search-tool#quick-start" class="product-card__cta" target="_blank" rel="noopener">查看安裝指南</a>
           </div>
         </div>
       </div>

@@ -183,6 +183,116 @@ img { max-width: 100%; display: block; }
   height: 20px;
 }
 
+/* Install Panel (Hero) */
+.install-panel {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+}
+
+.install-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-alt);
+}
+
+.install-tab {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: var(--transition);
+}
+
+.install-tab:hover { color: var(--text-head); }
+.install-tab.active {
+  color: var(--text-head);
+  border-bottom-color: var(--accent);
+  background: var(--surface);
+}
+
+.install-body { padding: 2rem; }
+.install-pane { display: none; }
+.install-pane.active { display: block; }
+
+.install-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.code-block {
+  background: #1a1a2e;
+  color: #e8e8e8;
+  padding: 1.25rem;
+  font-family: "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  position: relative;
+  overflow-x: auto;
+}
+
+.code-block .comment { color: #6b7280; }
+.code-block .cmd { color: #e8c47a; }
+
+.copy-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: rgba(255,255,255,0.1);
+  color: #e8e8e8;
+  border: none;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.75rem;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.copy-btn:hover { background: rgba(255,255,255,0.2); }
+
+.install-download h4 {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  color: var(--text-head);
+  margin-bottom: 0.5rem;
+}
+
+.install-download p {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.install-download .btn-filled {
+  display: inline-flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  background: var(--accent);
+  color: #fff;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
 /* Buttons */
 .btn-filled,
 .btn-outline-gold {
@@ -479,4 +589,6 @@ img { max-width: 100%; display: block; }
 
   .hero__cta { flex-direction: column; align-items: center; }
   .btn-filled, .btn-outline-gold { width: 100%; max-width: 320px; }
+  .install-grid { grid-template-columns: 1fr; }
+  .install-body { padding: 1.25rem; }
 }
