@@ -207,11 +207,16 @@
     <section class="section section--dark" aria-labelledby="cta-title">
       <div class="lp-container text-center">
         <h2 class="section-title" id="cta-title" data-animate>準備好開始了嗎？</h2>
-        <p class="section-subtitle" data-animate data-delay="1">下載安裝包或複製指令，五分鐘內即可在本機建立完整的法律檢索環境。採用 MIT 授權，完全免費，原始碼可自由檢視與修改。</p>
-        <div data-animate data-delay="2">
-          <a href="https://github.com/antu-tech/law-search-tool" class="btn-outline-gold" target="_blank" rel="noopener">
-            在 GitHub 上查看原始碼
-          </a>
+        <p class="section-subtitle" data-animate data-delay="1">下載安裝包或複製指令，五分鐘內即可在本機建立完整的法律檢索環境。採用 MIT 授權，完全免費。</p>
+        <div data-animate data-delay="2" style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem;">
+          <a id="download-btn-bottom" href="https://github.com/antu-tech/law-search-tool/releases/latest" class="btn-filled" target="_blank" rel="noopener">Download for macOS</a>
+        </div>
+        <div data-animate data-delay="3" style="max-width:600px;margin:0 auto;">
+          <div class="code-block" style="text-align:left;">
+            <button class="copy-btn" onclick="copyInstall(this)">複製</button>
+            <span class="cmd">curl -fsSL https://raw.githubusercontent.com/antu-tech/law-search-tool/main/scripts/install.sh | bash</span>
+          </div>
+          <p style="font-size:0.8125rem;color:var(--text-muted);margin-top:0.75rem">Works on macOS 12+ and Linux. Installs Docker, clones repo, and starts services.</p>
         </div>
       </div>
     </section>
